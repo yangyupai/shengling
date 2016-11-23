@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.yangyupai.game.interfaces.OnCardClickListener;
 import com.yangyupai.game.models.Card;
 
 /**
@@ -40,20 +41,9 @@ public class CardScreen extends BaseScreen {
         this.cards[4].setName("小军");
         for (int i = 0; i < cards.length; i++) {
             this.addClickAble(cards[i]);
-            cards[i].setListener(new Card.OnClickListener() {
-                @Override
-                public void onClick(Card card) {
-                    for (int j = 0; j < battleCards.length; j++) {
-                        if (battleCards[j] == null) {
-                            battleCards[j] = card;
-                            break;
-                        }
-                    }
-                }
-            });
+            OnCardClickListener listener = new cardListener();
+            cards[i].setListener(listener);
         }
-
-
     }
 
     @Override
@@ -76,5 +66,18 @@ public class CardScreen extends BaseScreen {
             }
         }
         batch.end();
+    }
+
+    class cardListener implements OnCardClickListener {
+
+        @Override
+        public void onClick(Card card) {
+            for (int j = 0; j < battleCards.length; j++) {
+                if (battleCards[j] == null) {
+                    battleCards[j] = card;
+                    break;
+                }
+            }
+        }
     }
 }

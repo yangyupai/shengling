@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.yangyupai.game.interfaces.ClickAble;
+import com.yangyupai.game.interfaces.OnCardClickListener;
 
 /**
  * Created by dongwenqiang on 16/11/13.
@@ -14,7 +15,7 @@ public class Card implements ClickAble {
 
     private String name = "";
 
-    private OnClickListener listener;
+    private OnCardClickListener listener;
 
     private int state = 0;
 
@@ -31,7 +32,7 @@ public class Card implements ClickAble {
         this.name = name;
     }
 
-    public void setListener(OnClickListener listener) {
+    public void setListener(OnCardClickListener listener) {
         this.listener = listener;
     }
 
@@ -60,9 +61,5 @@ public class Card implements ClickAble {
     @Override
     public boolean isXYinMe(float x, float y) {
         return this.me.getBoundingRectangle().contains(x, y);
-    }
-
-    public interface OnClickListener {
-        public void onClick(Card card);
     }
 }
