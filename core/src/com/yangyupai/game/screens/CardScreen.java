@@ -5,17 +5,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.yangyupai.game.interfaces.CardViewListener;
 import com.yangyupai.game.interfaces.OnCardClickListener;
 import com.yangyupai.game.models.Card;
+import com.yangyupai.game.views.CardView;
 
 /**
  * Created by dongwenqiang on 16/11/13.
  */
 public class CardScreen extends BaseScreen {
 
-    private Card[] cards;
+    private CardView[] cards;
 
-    private Card[] battleCards;
+    private CardView[] battleCards;
 
     SpriteBatch batch;
 
@@ -27,22 +29,23 @@ public class CardScreen extends BaseScreen {
     public void show() {
         super.show();
         batch = new SpriteBatch();
-        this.battleCards = new Card[3];
-        this.cards = new Card[5];
-        this.cards[0] = new Card(new Texture("badlogic.jpg"));
-        this.cards[1] = new Card(new Texture("badlogic.jpg"));
-        this.cards[2] = new Card(new Texture("badlogic.jpg"));
-        this.cards[3] = new Card(new Texture("badlogic.jpg"));
-        this.cards[4] = new Card(new Texture("badlogic.jpg"));
-        this.cards[0].setName("小明");
-        this.cards[1].setName("小红");
-        this.cards[2].setName("小刚");
-        this.cards[3].setName("小强");
-        this.cards[4].setName("小军");
+
+        cards = new CardView[this.user.getAllMyCards().size()];
+
+        for (int i = 0; i < cards.length; i++) {
+            cards[i] = new CardView(this.user.getAllMyCards().get(i));
+            cards[i].initView();
+        }
+
+        this.battleCards = new CardView[3];
+
         for (int i = 0; i < cards.length; i++) {
             this.addClickAble(cards[i]);
-            OnCardClickListener listener = new cardListener();
-            cards[i].setListener(listener);
+            CardViewListener listener = new cardListener();
+            this.cards[i].setCardViewListener(listener);
+            int x = i * 100;
+            int y = 100;
+            cards[i].setPosition(x, y);
         }
     }
 
@@ -52,32 +55,46 @@ public class CardScreen extends BaseScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         for (int i = 0; i < cards.length; i++) {
-            int x = i * 100;
-            int y = 100;
-            cards[i].setPosition(x, y);
             cards[i].drawMe(batch);
         }
         for (int i = 0; i < battleCards.length; i++) {
             if (battleCards[i] != null) {
-                int x = i * 100;
-                int y = 200;
-                battleCards[i].setPosition(x, y);
                 battleCards[i].drawMe(batch);
             }
         }
         batch.end();
     }
 
-    class cardListener implements OnCardClickListener {
+    class cardListener implements CardViewListener {
 
         @Override
-        public void onClick(Card card) {
-            for (int j = 0; j < battleCards.length; j++) {
-                if (battleCards[j] == null) {
-                    battleCards[j] = card;
+        public void onClick(CardView cardView) {
+            for (int i = 0; i < battleCards.length; i++) {
+                if (battleCards[i] == null) {
+                    battleCards[i] = cardView;
+                    int x = i * 100;
+                    int y = 200;
+                    battleCards[i].setPosition(x, y);
                     break;
                 }
             }
+        }
+
+        @Override
+        public void onDragged(CardView cardView, float x, float y) {
+            float lastX = cardView.getPointX();//上一次触摸的x
+            float lastY = cardView.getPointY();//上一次触摸的y
+            float currentX = cardView.getX();//当前的x
+            float currentY = cardView.getY();//当前的y
+            float tmpX = x - lastX;//触摸区域的偏移x
+            float tmpY = y - lastY;//触摸区域的偏移y
+
+            cardView.setPosition(currentX + tmpX, currentY + tmpY);
+        }
+
+        @Override
+        public void onDragFinish(CardView cardView) {
+
         }
     }
 }

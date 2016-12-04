@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.yangyupai.game.core.Global;
 import com.yangyupai.game.interfaces.ClickAble;
+import com.yangyupai.game.models.User;
 import com.yangyupai.game.utils.InputTrans;
 
 import java.util.ArrayList;
@@ -20,10 +21,13 @@ public abstract class BaseScreen implements Screen, InputProcessor {
 
     List<ClickAble> clickAbleList;
 
+    User user;
+
     public BaseScreen(Game game) {
         this.clickAbleList = new ArrayList<ClickAble>();
         this.game = game;
         Gdx.input.setInputProcessor(this);
+        this.user = Global.currentUser;
     }
 
     public void addClickAble(ClickAble clickAble) {
@@ -62,9 +66,11 @@ public abstract class BaseScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        float x = InputTrans.getCursorToModelX(Global.GAMEWIDTH, screenX);
+        float y = InputTrans.getCursorToModelY(Global.GAMEHEIGHT, screenY);
         for (ClickAble c : clickAbleList) {
-            if (c.isXYinMe(screenX, screenY)) {
-                c.onTouchDown();
+            if (c.isXYinMe(x, y)) {
+                c.onTouchDown(x, y);
                 return false;
             }
         }
@@ -90,7 +96,7 @@ public abstract class BaseScreen implements Screen, InputProcessor {
         float y = InputTrans.getCursorToModelY(Global.GAMEHEIGHT, screenY);
         for (ClickAble c : clickAbleList) {
             if (c.isXYinMe(x, y)) {
-                c.onTouchDragged();
+                c.onTouchDragged(x, y);
                 return false;
             }
         }

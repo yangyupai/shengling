@@ -2,6 +2,7 @@ package com.yangyupai.game.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.yangyupai.game.models.User;
 
 /**
  * Created by dongwenqiang on 16/11/13.
@@ -11,10 +12,12 @@ public class Global {
     public static final int GAMEHEIGHT = 600;
     private static long firstInTime = 0;
 
+    public static User currentUser;
+
     public static boolean isFirstInGame() {
         Preferences init = Gdx.app.getPreferences("init");
         firstInTime = init.getLong("firstTime", 0);
-        if (firstInTime == 0) {
+        if (firstInTime != 0) {
             firstInTime = System.currentTimeMillis();
             init.putLong("firstTime", firstInTime);
             init.flush();
