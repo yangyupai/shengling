@@ -6,12 +6,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.yangyupai.game.core.Global;
 import com.yangyupai.game.screens.MenuScreen;
 
 public class ShenglingGame extends Game {
 
     @Override
     public void create() {
+        if (Global.isFirstInGame()) {
+            System.out.println("first in game");
+        } else {
+            System.out.println("not first in game:" + Global.getFirstInTime());
+        }
         this.setScreen(new MenuScreen(this));
     }
 }
