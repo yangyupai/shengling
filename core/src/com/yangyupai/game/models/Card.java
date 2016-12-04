@@ -2,11 +2,6 @@ package com.yangyupai.game.models;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.yangyupai.game.interfaces.ClickAble;
-import com.yangyupai.game.interfaces.OnCardClickListener;
 
 /**
  * Created by dongwenqiang on 16/11/13.

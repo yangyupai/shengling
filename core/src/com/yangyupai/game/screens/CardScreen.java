@@ -3,11 +3,8 @@ package com.yangyupai.game.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.yangyupai.game.interfaces.CardViewListener;
-import com.yangyupai.game.interfaces.OnCardClickListener;
-import com.yangyupai.game.models.Card;
 import com.yangyupai.game.views.CardView;
 
 /**
