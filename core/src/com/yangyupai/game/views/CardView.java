@@ -48,6 +48,9 @@ public class CardView implements ClickAble {
     private float pointX = 0;//点击的位置x
     private float pointY = 0;//点击的位置y
 
+    private float initX = 0;//初始位置x
+    private float initY = 0;//初始位置y
+
     public void setCardViewListener(CardViewListener listener) {
         this.cardViewListener = listener;
     }
@@ -62,6 +65,10 @@ public class CardView implements ClickAble {
         this.meView = new Sprite(bgTexture, cardWidth, cardHeight);
     }
 
+    public Sprite getView() {
+        return this.meView;
+    }
+
     public void setWidthAndHeight(int width, int height) {
         this.cardWidth = width;
         this.cardHeight = height;
@@ -70,6 +77,19 @@ public class CardView implements ClickAble {
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public float getInitX() {
+        return initX;
+    }
+
+    public void setInitPosition(float initX, float initY) {
+        this.initX = initX;
+        this.initY = initY;
+    }
+
+    public float getInitY() {
+        return initY;
     }
 
     public float getX() {
@@ -133,6 +153,15 @@ public class CardView implements ClickAble {
     @Override
     public boolean isXYinMe(float x, float y) {
         return this.meView.getBoundingRectangle().contains(x, y);
+    }
+
+    @Override
+    public boolean isBeCollisionByOther(ClickAble clickAble) {
+        CardView other = (CardView) clickAble;
+        if (other.getView().getBoundingRectangle().overlaps(this.meView.getBoundingRectangle())) {
+            return true;
+        }
+        return false;
     }
 
     /**

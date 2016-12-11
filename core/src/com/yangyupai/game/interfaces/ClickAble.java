@@ -11,4 +11,12 @@ public interface ClickAble {
     public void onTouchDragged(float x, float y);
 
     public boolean isXYinMe(float x, float y);
+
+    /**
+     * 判断是否被另一个撞上了
+     *
+     * @param clickAble
+     * @return
+     */
+    public boolean isBeCollisionByOther(ClickAble clickAble);
 }

@@ -121,6 +121,11 @@ public class Card {
         return card;
     }
 
+    public void beAttack(Card enemy) {
+        int enemyDamage = enemy.getDamage();
+        this.setHp(this.getHp() - enemyDamage);
+    }
+
     @Override
     public String toString() {
         return "[ID]" + this.getId() + "[BG]" + this.getBg();

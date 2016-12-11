@@ -20,11 +20,13 @@ public abstract class BaseScreen implements Screen, InputProcessor {
     Game game;
 
     List<ClickAble> clickAbleList;
+    List<ClickAble> collisionList;
 
     User user;
 
     public BaseScreen(Game game) {
         this.clickAbleList = new ArrayList<ClickAble>();
+        this.collisionList = new ArrayList<ClickAble>();
         this.game = game;
         Gdx.input.setInputProcessor(this);
         this.user = Global.currentUser;
@@ -32,6 +34,10 @@ public abstract class BaseScreen implements Screen, InputProcessor {
 
     public void addClickAble(ClickAble clickAble) {
         this.clickAbleList.add(clickAble);
+    }
+
+    public void addCollisionList(ClickAble clickAble) {
+        this.collisionList.add(clickAble);
     }
 
     @Override
@@ -101,6 +107,15 @@ public abstract class BaseScreen implements Screen, InputProcessor {
             }
         }
         return true;
+    }
+
+    public ClickAble checkCollision(ClickAble clickAble) {
+        for (ClickAble c : this.collisionList) {
+            if (c.isBeCollisionByOther(clickAble)) {
+                return c;
+            }
+        }
+        return null;
     }
 
     @Override
