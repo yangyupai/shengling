@@ -62,6 +62,11 @@ public class CardView implements ClickAble {
         this.meView = new Sprite(bgTexture, cardWidth, cardHeight);
     }
 
+    public void setWidthAndHeight(int width, int height) {
+        this.cardWidth = width;
+        this.cardHeight = height;
+    }
+
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
