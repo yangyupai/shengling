@@ -28,6 +28,8 @@ public class BattleScreen extends BaseScreen {
         super(game);
     }
 
+    private CardView currSelected = null;//表示被操作选中的牌
+
     @Override
     public void show() {
         super.show();
@@ -53,7 +55,21 @@ public class BattleScreen extends BaseScreen {
             myCards[i].setCardViewListener(new CardViewListener() {
                 @Override
                 public void onClick(CardView cardView) {
-
+                    if (currSelected == null) {
+                        currSelected = cardView;
+                        System.out.println("选择卡牌：" + cardView.getData().getId());
+                    } else {
+                        currSelected.getData().useSkillTo(cardView.getData());
+                        System.out.println(currSelected.getData().getId()
+                                + "对"
+                                + cardView.getData().getId()
+                                + "使用技能："
+                                + currSelected.getData().getSkill().getSkillName()
+                        );
+                        System.out.println("释放者状态：" + currSelected.getData().getId() + " " + currSelected.getData().getHp());
+                        System.out.println("承担者状态：" + cardView.getData().getId() + " " + cardView.getData().getHp());
+                        currSelected = null;
+                    }
                 }
 
                 @Override

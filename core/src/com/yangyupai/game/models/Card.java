@@ -2,6 +2,8 @@ package com.yangyupai.game.models;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.yangyupai.game.datas.Skills;
+import com.yangyupai.game.skills.Skill;
 
 /**
  * Created by dongwenqiang on 16/11/13.
@@ -15,6 +17,9 @@ public class Card {
     private int damage;//卡牌伤害值
     private int level;//卡牌等级
     private int exp;//卡牌经验值
+    private String skillId;//卡牌ID
+
+    private Skill skill;//卡牌技能
 
     public String getBg() {
         return bg;
@@ -68,8 +73,25 @@ public class Card {
         this.level = level;
     }
 
+    public String getSkillId() {
+        return skillId;
+    }
+
+    public void setSkillId(String skillId) {
+        this.skillId = skillId;
+    }
+
     public void setExp(int exp) {
         this.exp = exp;
+    }
+
+    public Skill getSkill() {
+        return skill;
+    }
+
+    public void setSkill(Skill skill) {
+        this.skill = skill;
+        this.skill.setOwner(this);
     }
 
     /**
@@ -98,6 +120,7 @@ public class Card {
         preferences.putInteger("damage", this.getDamage());
         preferences.putInteger("level", this.getLevel());
         preferences.putInteger("exp", this.getExp());
+        preferences.putString("skillId", this.getSkillId());
         preferences.flush();
     }
 
@@ -117,6 +140,14 @@ public class Card {
         card.setDamage(preferences.getInteger("damage"));
         card.setLevel(preferences.getInteger("level"));
         card.setExp(preferences.getInteger("exp"));
+        String skillId = preferences.getString("skillId");
+        Skill skill = Skills.getSkill(skillId);
+        if (skill != null) {
+            card.setSkill(skill);
+            System.out.println(id + "加入技能" + skillId + " " + skill.getSkillName());
+        } else {
+            System.out.println(id + "技能" + skillId + "初始化失败");
+        }
         System.out.println("Load card:" + card);
         return card;
     }
@@ -124,6 +155,14 @@ public class Card {
     public void beAttack(Card enemy) {
         int enemyDamage = enemy.getDamage();
         this.setHp(this.getHp() - enemyDamage);
+    }
+
+    public void useSkillTo(Card... cards) {
+        if (cards == null) {
+            System.out.println("目标为空");
+        } else {
+            this.skill.handle(cards);
+        }
     }
 
     @Override
